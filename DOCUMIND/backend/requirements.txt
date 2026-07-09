@@ -1,0 +1,12 @@
+Flask
+flask-cors
+pdfplumber
+pytesseract
+Pillow
+sentence-transformers
+scikit-learn
+numpy
+google-genai
+google-generativeai
+python-dotenv
+python-multipart

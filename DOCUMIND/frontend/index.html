@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocuMind</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="app-container" id="app-container" style="display: none;">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-icon"></div>
+                <h2>DocuMind</h2>
+            </div>
+
+            <!-- User Profile Section -->
+            <div class="user-profile" id="user-profile">
+                <div class="user-info">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="username-display">User</span>
+                </div>
+                <button class="logout-btn" id="logout-btn" title="Logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+
+            <nav id="sidebar-nav">
+                <button class="nav-btn active" data-view="home-view">
+                    <i class="fas fa-home"></i> Home
+                </button>
+                <button class="nav-btn" data-view="files-view">
+                    <i class="fas fa-file-alt"></i> My Files
+                </button>
+                <button class="nav-btn" data-view="search-view">
+                    <i class="fas fa-search"></i> Search
+                </button>
+
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="content">
+            <!-- Home View -->
+            <section id="home-view" class="view active">
+                <div class="hero">
+                    <span class="hero-badge">Document Intelligence System</span>
+                    <h1>Understand Your Documents Faster</h1>
+                    <p>DocuMind uses advanced search technology to find your files faster. Upload your documents to get
+                        started.</p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary" onclick="app.switchView('files-view')">Upload Documents</button>
+
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Total Documents</h3>
+                        <div class="stat-number" id="stat-total-docs">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Searches</h3>
+                        <div class="stat-number" id="stat-total-searches">0</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Files View -->
+            <section id="files-view" class="view">
+                <div class="page-header">
+                    <h2>My Documents</h2>
+                    <p>Manage and upload your PDF or image files for analysis.</p>
+                </div>
+
+                <div class="file-dropzone" id="dropzone">
+                    <i class="fas fa-cloud-upload-alt fa-3x" style="color: var(--primary);"></i>
+                    <h3>Click or Drag File to Upload</h3>
+                    <p>Supports PDF, PNG, JPG, JPEG</p>
+                    <input type="file" id="file-input" hidden accept=".pdf,.png,.jpg,.jpeg">
+                </div>
+
+                <div id="file-list-container">
+                    <ul class="file-list" id="file-list">
+                        <!-- File items will be injected by script.js -->
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Search View -->
+            <section id="search-view" class="view">
+                <div class="page-header">
+                    <h2>Semantic Search</h2>
+                    <p>Search across all documents using natural language instead of just keywords.</p>
+                </div>
+
+                <div class="input-group">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="search-input" placeholder="Ask a question about your files...">
+                    <button class="btn btn-primary" id="search-btn">Search</button>
+                </div>
+
+                <div class="search-results" id="search-results">
+                    <div class="empty-state">
+                        <p>No results yet. Try searching for a topic in your documents.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Chat View Removed -->
+        </main>
+    </div>
+
+    <!-- Summary Modal Removed -->
+
+    <!-- Auth View -->
+    <div class="auth-container" id="auth-container">
+        <div class="auth-card">
+            <div class="logo" style="margin-bottom: 32px; justify-content: center;">
+                <div class="logo-icon"></div>
+                <h2>DocuMind</h2>
+            </div>
+
+            <!-- Login Form -->
+            <div id="login-form-container">
+                <h3>Login</h3>
+                <p>Welcome back! Please enter your details.</p>
+                <form id="login-form" class="auth-form">
+                    <div id="login-error" class="form-error"></div>
+                    <div class="input-group-auth">
+                        <label for="login-username">Username</label>
+                        <input type="text" id="login-username" required placeholder="Enter username"
+                            autocomplete="username">
+                        <span class="field-error" id="err-login-username"></span>
+                    </div>
+                    <div class="input-group-auth">
+                        <label for="login-password">Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="login-password" required placeholder="••••••••"
+                                autocomplete="current-password">
+                            <i class="fas fa-eye toggle-password" data-target="login-password"></i>
+                        </div>
+                        <span class="field-error" id="err-login-password"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full" id="login-btn">
+                        <span class="btn-text">Sign In</span>
+                        <i class="fas fa-spinner fa-spin btn-loader"></i>
+                    </button>
+                </form>
+
+                <p class="auth-toggle">Don't have an account? <a href="#" id="show-register">Register</a></p>
+            </div>
+
+            <!-- Register Form -->
+            <div id="register-form-container" style="display: none;">
+                <h3>Create Account</h3>
+                <p>Start managing your documents securely.</p>
+                <form id="register-form" class="auth-form">
+                    <div id="register-error" class="form-error"></div>
+                    <div class="input-group-auth">
+                        <label for="reg-username">Username</label>
+                        <input type="text" id="reg-username" required placeholder="Choose a username"
+                            autocomplete="username">
+                        <span class="field-error" id="err-reg-username"></span>
+                    </div>
+                    <div class="input-group-auth">
+                        <label for="reg-email">Email</label>
+                        <input type="email" id="reg-email" required placeholder="Enter your email" autocomplete="email">
+                        <span class="field-error" id="err-reg-email"></span>
+                    </div>
+                    <div class="input-group-auth">
+                        <label for="reg-password">Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="reg-password" required placeholder="Min. 6 characters"
+                                autocomplete="new-password">
+                            <i class="fas fa-eye toggle-password" data-target="reg-password"></i>
+                        </div>
+                        <span class="field-error" id="err-reg-password"></span>
+                    </div>
+                    <div class="input-group-auth">
+                        <label for="reg-confirm-password">Confirm Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="reg-confirm-password" required placeholder="Repeat password"
+                                autocomplete="new-password">
+                            <i class="fas fa-eye toggle-password" data-target="reg-confirm-password"></i>
+                        </div>
+                        <span class="field-error" id="err-reg-confirm-password"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full" id="register-btn">
+                        <span class="btn-text">Create Account</span>
+                        <i class="fas fa-spinner fa-spin btn-loader"></i>
+                    </button>
+                </form>
+
+                <p class="auth-toggle">Already have an account? <a href="#" id="show-login">Login</a></p>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="/script.js"></script>
+</body>
+
+</html>
